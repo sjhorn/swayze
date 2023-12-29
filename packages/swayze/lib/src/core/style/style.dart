@@ -109,6 +109,9 @@ class SwayzeStyle {
   /// [SwayzeHeaderPalette.foreground].
   final TextStyle headerTextStyle;
 
+  /// Optional style for vertical header text alignment
+  final TextAlign headerVerticalTextAlign;
+
   /// The style of the table select area
   final TableSelectStyle tableSelectStyle;
 
@@ -158,6 +161,7 @@ class SwayzeStyle {
     required this.dragAndDropStyle,
     required this.dragAndFillStyle,
     required this.resizeHeaderStyle,
+    this.headerVerticalTextAlign = TextAlign.center,
   });
 
   /// Copy an instance of [SwayzeStyle] with certain modifications.
@@ -169,6 +173,7 @@ class SwayzeStyle {
     SwayzeHeaderPalette? highlightedHeaderPalette,
     Color? headerSeparatorColor,
     TextStyle? headerTextStyle,
+    TextAlign? headerVerticalTextAlign,
     TableSelectStyle? tableSelectStyle,
     Color? defaultCellBackground,
     Color? cellSeparatorColor,
@@ -205,6 +210,8 @@ class SwayzeStyle {
       dragAndDropStyle: dragAndDropStyle ?? this.dragAndDropStyle,
       dragAndFillStyle: dragAndFillStyle ?? this.dragAndFillStyle,
       resizeHeaderStyle: resizeHeaderStyle ?? this.resizeHeaderStyle,
+      headerVerticalTextAlign:
+          headerVerticalTextAlign ?? this.headerVerticalTextAlign,
     );
   }
 
@@ -228,7 +235,8 @@ class SwayzeStyle {
           inlineEditorShadow == other.inlineEditorShadow &&
           dragAndDropStyle == other.dragAndDropStyle &&
           dragAndFillStyle == other.dragAndFillStyle &&
-          resizeHeaderStyle == other.resizeHeaderStyle;
+          resizeHeaderStyle == other.resizeHeaderStyle &&
+          headerVerticalTextAlign == other.headerVerticalTextAlign;
 
   @override
   int get hashCode =>
@@ -246,7 +254,8 @@ class SwayzeStyle {
       inlineEditorShadow.hashCode ^
       dragAndDropStyle.hashCode ^
       dragAndFillStyle.hashCode ^
-      resizeHeaderStyle.hashCode;
+      resizeHeaderStyle.hashCode ^
+      headerVerticalTextAlign.hashCode;
 }
 
 /// Style for header drag and drop preview widgets.
