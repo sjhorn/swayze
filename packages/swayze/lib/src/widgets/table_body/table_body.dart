@@ -30,11 +30,14 @@ class TableBody extends StatelessWidget {
 
   final WrapTableBodyBuilder? wrapTableBody;
 
+  final WrapActiveCellBuilder? wrapActiveCell;
+
   const TableBody({
     Key? key,
     required this.horizontalDisplacement,
     required this.verticalDisplacement,
     required this.wrapTableBody,
+    required this.wrapActiveCell,
   }) : super(key: key);
 
   @override
@@ -62,6 +65,7 @@ class TableBody extends StatelessWidget {
           _TableBodyScrollableArea(
             style: style,
             viewportContext: viewportContext,
+            wrapActiveCell: wrapActiveCell,
           ),
 
           // If there is any frozen rows, add the area responsible for
@@ -74,6 +78,7 @@ class TableBody extends StatelessWidget {
               verticalDisplacement: verticalDisplacement,
               viewportContext: viewportContext,
               isOnAFrozenRowsArea: true,
+              wrapActiveCell: wrapActiveCell,
             ),
 
           // If there is any frozen columns, add the area responsible for
@@ -86,6 +91,7 @@ class TableBody extends StatelessWidget {
               verticalDisplacement: verticalDisplacement,
               viewportContext: viewportContext,
               isOnAFrozenColumnsArea: true,
+              wrapActiveCell: wrapActiveCell,
             ),
 
           // If there is any frozen columns and rows,
@@ -99,6 +105,7 @@ class TableBody extends StatelessWidget {
               viewportContext: viewportContext,
               isOnAFrozenColumnsArea: true,
               isOnAFrozenRowsArea: true,
+              wrapActiveCell: wrapActiveCell,
             ),
 
           // If columns or rows are being dragged, add the preview on top
@@ -150,11 +157,13 @@ class TableBody extends StatelessWidget {
 class _TableBodyScrollableArea extends StatelessWidget {
   final SwayzeStyle style;
   final ViewportContext viewportContext;
+  final WrapActiveCellBuilder? wrapActiveCell;
 
   const _TableBodyScrollableArea({
     Key? key,
     required this.style,
     required this.viewportContext,
+    required this.wrapActiveCell,
   }) : super(key: key);
 
   @override
@@ -188,7 +197,7 @@ class _TableBodyScrollableArea extends StatelessWidget {
             translateOffset: offset,
           ),
         ),
-        const ClipRect(child: TableBodySelections()),
+        ClipRect(child: TableBodySelections(wrapActiveCell: wrapActiveCell)),
       ],
     );
   }
@@ -205,6 +214,7 @@ class _TableBodyFrozenArea extends StatelessWidget {
   final bool isOnAFrozenColumnsArea;
   final bool isOnAFrozenRowsArea;
   final ViewportContext viewportContext;
+  final WrapActiveCellBuilder? wrapActiveCell;
 
   const _TableBodyFrozenArea({
     Key? key,
@@ -214,6 +224,7 @@ class _TableBodyFrozenArea extends StatelessWidget {
     this.isOnAFrozenColumnsArea = false,
     this.isOnAFrozenRowsArea = false,
     required this.viewportContext,
+    required this.wrapActiveCell,
   }) : super(key: key);
 
   @override
@@ -294,6 +305,7 @@ class _TableBodyFrozenArea extends StatelessWidget {
             child: TableBodySelections(
               isOnAFrozenRowsArea: isOnAFrozenRowsArea,
               isOnAFrozenColumnsArea: isOnAFrozenColumnsArea,
+              wrapActiveCell: wrapActiveCell,
             ),
           ),
         ],

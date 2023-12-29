@@ -7,6 +7,7 @@ import '../../../../../controller.dart';
 import '../../../../core/style/style.dart';
 import '../../../../core/viewport_context/viewport_context_provider.dart';
 import '../../../internal_scope.dart';
+import '../../../wrappers.dart';
 import '../selection_rendering_helpers.dart';
 
 /// A [StatefulWidget] to render the primary selection of the
@@ -30,6 +31,8 @@ class PrimarySelection extends StatefulWidget {
 
   final bool isOnFrozenRows;
 
+  final WrapActiveCellBuilder? wrapActiveCell;
+
   const PrimarySelection({
     Key? key,
     required this.selectionModel,
@@ -38,6 +41,7 @@ class PrimarySelection extends StatefulWidget {
     required this.yRange,
     required this.isOnFrozenColumns,
     required this.isOnFrozenRows,
+    required this.wrapActiveCell,
   }) : super(key: key);
 
   @override
@@ -91,28 +95,59 @@ class _PrimarySelectionState extends State<PrimarySelection>
 
     final borderSide = selectionStyle.borderSide;
 
-    final visibleRangeForHandle = Range2D.fromLTRB(
-      IntVector2(xRange.start, yRange.start),
-      IntVector2(xRange.end + 1, yRange.end + 1),
-    );
+    // Option to wrap primary selection / active cell
+    final wrapActiveCell = widget.wrapActiveCell;
+    if (wrapActiveCell != null) {
+      final child = _AnimatedPrimarySelection(
+        size: size,
+        offset: Offset.zero, // taken care of by Positioned widget
+        decoration: BoxDecoration(
+          color: selectionStyle.backgroundColor,
+          border: getVisibleBorder(range, borderSide).toFlutterBorder(),
+        ),
+        handleStyle: handleStyle,
+        duration: styleContext.selectionAnimationDuration,
+        activeCellRect: widget.activeCellRect,
+        isSingleCell: isSingleCell,
+      );
 
-    // Avoid drawing handle in frozen cells if not adjacent
-    final handleStyle = visibleRangeForHandle.containsVector(range.rightBottom)
-        ? this.handleStyle
-        : null;
+      return Positioned(
+        left: leftTopPixelOffset.dx,
+        top: leftTopPixelOffset.dy,
+        width: widget.activeCellRect.width,
+        height: widget.activeCellRect.height,
+        child: wrapActiveCell(
+          context,
+          viewportContext,
+          selectionModel.anchorCoordinate,
+          child,
+        ),
+      );
+    } else {
+      final visibleRangeForHandle = Range2D.fromLTRB(
+        IntVector2(xRange.start, yRange.start),
+        IntVector2(xRange.end + 1, yRange.end + 1),
+      );
 
-    return _AnimatedPrimarySelection(
-      size: size,
-      offset: leftTopPixelOffset,
-      decoration: BoxDecoration(
-        color: selectionStyle.backgroundColor,
-        border: getVisibleBorder(range, borderSide).toFlutterBorder(),
-      ),
-      handleStyle: handleStyle,
-      duration: styleContext.selectionAnimationDuration,
-      activeCellRect: widget.activeCellRect,
-      isSingleCell: isSingleCell,
-    );
+      // Avoid drawing handle in frozen cells if not adjacent
+      final handleStyle =
+          visibleRangeForHandle.containsVector(range.rightBottom)
+              ? this.handleStyle
+              : null;
+
+      return _AnimatedPrimarySelection(
+        size: size,
+        offset: leftTopPixelOffset,
+        decoration: BoxDecoration(
+          color: selectionStyle.backgroundColor,
+          border: getVisibleBorder(range, borderSide).toFlutterBorder(),
+        ),
+        handleStyle: handleStyle,
+        duration: styleContext.selectionAnimationDuration,
+        activeCellRect: widget.activeCellRect,
+        isSingleCell: isSingleCell,
+      );
+    }
   }
 }
 

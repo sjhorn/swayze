@@ -45,6 +45,9 @@ class TableScaffold extends StatefulWidget {
   /// See [SliverSwayzeTable.wrapHeader]
   final WrapHeaderBuilder? wrapHeader;
 
+  /// See [SliverSwayzeTable.wrapActiveCell]
+  final WrapActiveCellBuilder? wrapActiveCell;
+
   /// See [SliverSwayzeTable.onHeaderExtentChanged].
   final OnHeaderExtentChanged? onHeaderExtentChanged;
 
@@ -54,6 +57,7 @@ class TableScaffold extends StatefulWidget {
     required this.verticalDisplacement,
     this.wrapTableBody,
     this.wrapHeader,
+    this.wrapActiveCell,
     this.onHeaderExtentChanged,
   }) : super(key: key);
 
@@ -138,6 +142,7 @@ class _TableScaffoldState extends State<TableScaffold> {
             horizontalDisplacement: widget.horizontalDisplacement,
             verticalDisplacement: widget.verticalDisplacement,
             wrapTableBody: widget.wrapTableBody,
+            wrapActiveCell: widget.wrapActiveCell,
           ),
         ),
       ],

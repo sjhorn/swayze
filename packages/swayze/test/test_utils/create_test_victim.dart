@@ -37,17 +37,19 @@ class TestTableWrapper extends StatefulWidget {
   final SwayzeStyle? style;
 
   final Widget? header;
+  final WrapActiveCellBuilder? wrapActiveCell;
 
-  TestTableWrapper({
-    Key? key,
-    ScrollController? verticalScrollController,
-    bool? autofocus,
-    this.header,
-    this.swayzeController,
-    this.editorBuilder,
-    this.config,
-    this.style,
-  })  : verticalScrollController =
+  TestTableWrapper(
+      {Key? key,
+      ScrollController? verticalScrollController,
+      bool? autofocus,
+      this.header,
+      this.swayzeController,
+      this.editorBuilder,
+      this.config,
+      this.style,
+      this.wrapActiveCell})
+      : verticalScrollController =
             verticalScrollController ?? ScrollController(),
         autofocus = autofocus ?? false,
         super(key: key);
@@ -74,6 +76,7 @@ class _TestTableWrapperState extends State<TestTableWrapper> {
       inlineEditorBuilder: widget.editorBuilder ?? defaultCellEditorBuilder,
       verticalScrollController: widget.verticalScrollController,
       config: widget.config,
+      wrapActiveCell: widget.wrapActiveCell,
     );
   }
 }
