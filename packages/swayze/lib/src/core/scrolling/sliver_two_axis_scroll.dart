@@ -98,8 +98,7 @@ class _SliverTwoAxisScrollState extends State<SliverTwoAxisScroll> {
                 ScrollingData verticalScrollingData,
               ) {
                 return VirtualizationCalculator(
-                  headerSize: tableDataController
-                      .columnHeaderHeight(), //kColumnHeaderHeight,
+                  headerSize: tableDataController.columnHeaderHeight(),
                   scrollingData: verticalScrollingData,
                   axis: Axis.vertical,
                   frozenAmount: rowsState.frozenCount,

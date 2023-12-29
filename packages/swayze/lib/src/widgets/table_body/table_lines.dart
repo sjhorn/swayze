@@ -14,7 +14,6 @@ class TableLines extends StatelessWidget {
   /// The size of each visible row
   final List<double> rowSizes;
 
-  //final SwayzeStyle swayzeStyle;
   final BorderInfo borderInfo;
 
   /// The offset in which the painting of lines will be translated by.
@@ -57,9 +56,6 @@ class _TableLinesPainter extends LeafRenderObjectWidget {
   /// The size of each visible row
   final List<double> rowSizes;
 
-  // final Color lineColor;
-
-  // final double lineWidth;
   final BorderInfo borderInfo;
 
   /// The offset in which the painting of lines will be translated by.

@@ -141,11 +141,9 @@ class _HeaderEdgeMouseListenerState extends State<HeaderEdgeMouseListener> {
           .virtualizationState
           .rangeNotifier
           .value;
-      localPixelOffset -=
-          tableDataController.rowHeaderWidthForRange(range); //kRowHeaderWidth;
+      localPixelOffset -= tableDataController.rowHeaderWidthForRange(range);
     } else {
-      localPixelOffset -=
-          tableDataController.columnHeaderHeight(); //kColumnHeaderHeight;
+      localPixelOffset -= tableDataController.columnHeaderHeight();
     }
 
     final frozenExtent = axisContext.value.frozenExtent;

@@ -76,7 +76,7 @@ class _TableScaffoldState extends State<TableScaffold> {
 
   // The state for sizes of headers
   late final double columnHeaderHeight =
-      tableDataController.columnHeaderHeight(); //config.kColumnHeaderHeight;
+      tableDataController.columnHeaderHeight();
   late double rowHeaderWidth = tableDataController.rowHeaderWidthForRange(
     verticalRangeNotifier.value,
   );

@@ -251,8 +251,8 @@ class _RenderHeaderItem extends RenderBox
     },
   )
       .withDependency<TextStyle>(() => textStyle)
-      .withDependency<Size>(() => size)
-      .withDependency<TextAlign>(() => textAlign);
+      .withDependency<TextAlign>(() => textAlign)
+      .withDependency<Size>(() => size);
 
   _RenderHeaderItem({
     required Axis axis,
