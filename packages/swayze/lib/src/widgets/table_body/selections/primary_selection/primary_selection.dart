@@ -76,7 +76,8 @@ class _PrimarySelectionState extends State<PrimarySelection>
 
   @override
   late final viewportContext = ViewportContextProvider.of(context);
-
+  late final cellsController =
+      InternalScope.of(context).controller.cellsController;
   late final tableDataController =
       InternalScope.of(context).controller.tableDataController;
 
@@ -126,11 +127,16 @@ class _PrimarySelectionState extends State<PrimarySelection>
         top: leftTopPixelOffset.dy,
         width: widget.activeCellRect.width,
         height: widget.activeCellRect.height,
-        child: wrapActiveCell(
-          context,
-          viewportContext,
-          selectionModel.anchorCoordinate,
-          child,
+        child: ListenableBuilder(
+          listenable: cellsController,
+          builder: (context, _) {
+            return wrapActiveCell(
+              context,
+              viewportContext,
+              selectionModel.anchorCoordinate,
+              child,
+            );
+          },
         ),
       );
     } else {
