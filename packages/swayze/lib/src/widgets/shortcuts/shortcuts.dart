@@ -28,7 +28,7 @@ class _TableShortcutsState extends State<TableShortcuts> {
   late final internalScope = InternalScope.of(context);
 
   late final manager =
-      _CustomShortcutManager(<ShortcutActivator, Intent Function(RawKeyEvent)>{
+      _CustomShortcutManager(<ShortcutActivator, Intent Function(KeyEvent)>{
     const AnyCharacterActivator(): (event) {
       return OpenInlineEditorIntent(
         initialText: event.character,
@@ -191,12 +191,12 @@ const _kMacShortcuts = <ShortcutActivator, Intent>{
 };
 
 class _CustomShortcutManager extends ShortcutManager {
-  final Map<ShortcutActivator, Intent Function(RawKeyEvent)> customShortcuts;
+  final Map<ShortcutActivator, Intent Function(KeyEvent)> customShortcuts;
 
   _CustomShortcutManager(this.customShortcuts, {required super.shortcuts});
 
   @override
-  KeyEventResult handleKeypress(BuildContext context, RawKeyEvent event) {
+  KeyEventResult handleKeypress(BuildContext context, KeyEvent event) {
     final primaryContext = primaryFocus?.context;
 
     if (primaryContext == null) {
@@ -204,7 +204,7 @@ class _CustomShortcutManager extends ShortcutManager {
     }
 
     for (final entry in customShortcuts.entries) {
-      if (entry.key.accepts(event, RawKeyboard.instance)) {
+      if (entry.key.accepts(event, HardwareKeyboard.instance)) {
         final matchedIntent = entry.value(event);
         final action = Actions.maybeFind<Intent>(
           primaryContext,
@@ -231,9 +231,9 @@ class AnyCharacterActivator extends ShortcutActivator {
   const AnyCharacterActivator();
 
   @override
-  bool accepts(RawKeyEvent e, RawKeyboard state) {
+  bool accepts(KeyEvent e, HardwareKeyboard state) {
     final event = e;
-    if (event is! RawKeyDownEvent) {
+    if (event is! KeyDownEvent) {
       return false;
     }
 
@@ -244,7 +244,8 @@ class AnyCharacterActivator extends ShortcutActivator {
     }
 
     final keysPressed = LogicalKeyboardKey.collapseSynonyms(
-      state.keysPressed,
+      //state.keysPressed,
+      state.logicalKeysPressed,
     );
 
     if (keysPressed.contains(LogicalKeyboardKey.delete) ||
